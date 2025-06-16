@@ -3,6 +3,7 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
 import {ElMessage} from "element-plus";
+import {userLoginService,userRegisterService} from "@/api/user.js";
 
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
@@ -52,40 +53,28 @@ const rules = {
     {validator:checkrePassword, trigger: 'blur'},
   ]
 }
-// 注册
-import {userLoginService, userRegisterService} from '@/api/user.js'
-const  register = async () => {
-  try{
-    console.log(registerData.value)
-    let result = await userRegisterService(registerData.value)
-    console.log("注册后，result: ", result.data)
-/*    if(result.code === 0){
-      alert(result.msg ? result.msg : '注册成功')
-    } else {
-      alert('注册失败；请重试。')
-    }*/
-    // alert(result.msg ? result.msg : '注册成功')
-    ElMessage.success(result.msg ? result.msg : '注册成功')
-  }catch(error){
-    console.log(error)
-  }
 
+
+const register = async () => {
+  try {
+    let result = await userRegisterService(registerData.value)
+    if (result.data.code === 0) {
+      ElMessage.success(result.data.message ? result.data.message : '注册成功，请登录！')
+    }
+  }catch(err) {
+    console.log(err)
+  }
 }
 
-// 登录
 const login = async () => {
-  try{
+  try {
     let result = await userLoginService(registerData.value)
-/*    if(result.code === 0){
-      alert(result.msg ? result.msg : '登录成功')
-    } else {
-      alert('登录失败；请重试。')
-    }*/
-    ElMessage.success(result.msg ? result.msg : '登录成功')
-  }catch(error){
+    if (result.data.code === 0) {
+      ElMessage.success(result.data.message ? result.data.message : '登录成功')
+    }
+  }catch(error) {
     console.log(error)
   }
-
 }
 
 // 清空

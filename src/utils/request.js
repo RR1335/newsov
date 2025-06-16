@@ -1,33 +1,20 @@
-import axios from 'axios';
+import axios from "axios";
 
-import {ElMessage} from "element-plus";
+import { ElMessage } from "element-plus";
 
-// const preUrl = 'http://localhost:8080';
-const preUrl = '/api';
-const instance = axios.create({preUrl});
+const preURL = '/api'
+const inst = axios.create({baseURL: preURL});
 
-instance.interceptors.request.use(
-    result=>{
-        if(result.status === 200 && result.status !== 1){
-            alert(result.data.msg || "request js 请求错误");
-            Promise.reject(rejection)
-        }
-        console.log("request - " + result.data);
-        if (result.data.code === 0){
-            return Promise.resolve(result.data);
-        }
+inst.interceptors.request.use(function (config) {
+    // Do something before request is sent
 
-        console.log("request  result.data.code - " + result.data.code);
+    // console.log("status ",config.status);  // status  undefined
 
-        // alert(result.data.msg ? result.data.msg : 'request js 服务器异常');
-        ElMessage.error(result.data.msg ? result.data.msg : 'request js 服务器异常');
-        return Promise.reject(result.data);
-    },
+    return config;
+}, function (error) {
+    // Do something with request error
+    ElMessage.error(result.data.msg ? result.data.msg : 'request js 服务器异常');
+    return Promise.reject(error);
+});
 
-    error=>{
-        alert(' request js 服务异常，请稍后重试。')
-        return Promise.reject(error); // 异步状态处理
-    }
-)
-
-export default instance;
+export default inst
