@@ -1,10 +1,14 @@
 <script setup>
-import LoginVue from "@/views/login.vue"
-
+// import LoginVue from "@/views/login.vue"
+// import LayoutVue from "@/views/layout.vue"
 </script>
 
 <template>
-  <login-vue/>
+
+  <router-view>
+
+
+  </router-view>
 
 </template>
 

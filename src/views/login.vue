@@ -21,11 +21,11 @@ const checkPassword = (rule,value,callback) => {
   if (value !== registerData.value.username) {
     callback()
   }else {
-    callback("用户名、密码需要保持不一致；请重新输入。")
+    callback("用户名、密码要不一样；请重新输入。")
   }
 }
 
-const checkrePassword = (rule,value,callback) => {
+const checkerPassword = (rule,value,callback) => {
   if(value === '') {
     callback(new Error('确认密码不能为空，请输入'))
   }else if(value.length < 3) {
@@ -39,8 +39,16 @@ const checkrePassword = (rule,value,callback) => {
   }
 }
 
+// const checkName = (rule,value,callback) => {
+//   const pat = '^[a-zA-Z]\w*'
+//   if (pat.test(value)) {
+//     callback(new Error('用户名应字母开头字母数字组合'))
+//   }
+// }
+
 const rules = {
   username: [
+    // {validator: checkName, trigger: 'blur'},
     {required:true, message: '请输入用户名', trigger: 'blur'},
     {min:3,max:10,message: '用户名长度 3 - 10个字符/汉字', trigger: 'blur'},
   ],
@@ -50,31 +58,31 @@ const rules = {
     {min:3,max:10,message: '密码长度 3 - 10个字符', trigger: 'blur'},
   ],
   rePassword: [
-    {validator:checkrePassword, trigger: 'blur'},
+    {validator:checkerPassword, trigger: 'blur'},
   ]
 }
 
 
 const register = async () => {
-  try {
+  // try {
     let result = await userRegisterService(registerData.value)
-    if (result.data.code === 0) {
+    // if (result.data.code === 0) {
       ElMessage.success(result.data.message ? result.data.message : '注册成功，请登录！')
-    }
-  }catch(err) {
-    console.log(err)
-  }
+  //   }
+  // }catch(err) {
+  //   console.log(err)
+  // }
 }
 
 const login = async () => {
-  try {
+  // try {
     let result = await userLoginService(registerData.value)
-    if (result.data.code === 0) {
+    // if (result.data.code === 0) {
       ElMessage.success(result.data.message ? result.data.message : '登录成功')
-    }
-  }catch(error) {
-    console.log(error)
-  }
+  //   }
+  // }catch(error) {
+  //   console.log(error)
+  // }
 }
 
 // 清空
