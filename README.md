@@ -5,6 +5,7 @@
     npm install axios
     npm install pinia
     npm install vue-router@4
+    npm i pinia-plugin-persistedstate
 
 
 

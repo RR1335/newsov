@@ -5,11 +5,13 @@ import { ref } from 'vue'
 import {ElMessage} from "element-plus";
 import {userLoginService,userRegisterService} from "@/api/user.js";
 import { useRouter} from 'vue-router';
+import {useTokenStore} from "@/stores/token.js";
 
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
 
 const router = useRouter()
+const tokenStore = useTokenStore()
 
 // 定义数据模型
 const registerData = ref({
@@ -67,26 +69,21 @@ const rules = {
 
 
 const register = async () => {
-  // try {
+
     let result = await userRegisterService(registerData.value)
-    // if (result.data.code === 0) {
+
       ElMessage.success(result.data.message ? result.data.message : '注册成功，请登录！')
-  //   }
-  // }catch(err) {
-  //   console.log(err)
-  // }
+
 }
 
+
 const login = async () => {
-  // try {
+
     let result = await userLoginService(registerData.value)
-    // if (result.data.code === 0) {
-      ElMessage.success(result.data.message ? result.data.message : '登录成功')
-  //   }
-  // }catch(error) {
-  //   console.log(error)
-  // }
-  router.push('/')
+    ElMessage.success(result.data.message ? result.data.message : '登录成功')
+    tokenStore.setToken(result.data.data)
+
+    router.push('/')
 }
 
 // 清空

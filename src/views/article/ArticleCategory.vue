@@ -33,7 +33,10 @@ const categorys = ref([
 
 const articleCategoryList = async () => {
   let list = await articleCategoryListService();
-  categorys.value = list.data;
+  // console.log(list);
+  // console.log(list.data);
+  // console.log(list.data.data);
+  categorys.value = list.data.data;
 }
 articleCategoryList();
 </script>
