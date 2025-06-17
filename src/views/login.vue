@@ -4,9 +4,12 @@ import { ref } from 'vue'
 
 import {ElMessage} from "element-plus";
 import {userLoginService,userRegisterService} from "@/api/user.js";
+import { useRouter} from 'vue-router';
 
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
+
+const router = useRouter()
 
 // 定义数据模型
 const registerData = ref({
@@ -83,6 +86,7 @@ const login = async () => {
   // }catch(error) {
   //   console.log(error)
   // }
+  router.push('/')
 }
 
 // 清空
