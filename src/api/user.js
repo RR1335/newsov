@@ -39,3 +39,7 @@ export const userRegisterService = (registerData) => {
 export const userInfoService = () => {
     return inst.get('/user/userInfo')
 }
+
+export const updateUserInfoService = (userInfoData) => {
+    return inst.put('/user/update', userInfoData)
+}

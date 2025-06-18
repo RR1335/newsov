@@ -1,17 +1,24 @@
 <script setup>
 import { ref } from 'vue'
-const userInfo = ref({
-  id: 0,
-  username: 'sange',
-  nickname: '三个',
-  email: 'biz@baijing.com',
-})
+import useUserInfoStore from "@/stores/userInfo.js";
+import {updateUserInfoService} from "@/api/user.js";
+import {ElMessage} from "element-plus";
+
+const userInfoStore = useUserInfoStore();
+
+const userInfo =ref({...userInfoStore.info})
+// const userInfo = ref({
+//   id: 0,
+//   username: 'sange',
+//   nickname: 'sange',
+//   email: 'biz@baijing.com',
+// })
 const rules = {
   nickname: [
     { required: true, message: '请输入用户昵称', trigger: 'blur' },
     {
       pattern: /^\S{3,10}$/,
-      message: '昵称必须是2-10位的非空字符串',
+      message: '昵称必须是3-10位的非空字符串',
       trigger: 'blur'
     }
   ],
@@ -20,6 +27,16 @@ const rules = {
     { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
   ]
 }
+
+const updateUserInfo = async () => {
+  console.log(userInfo.value)
+  let result = await updateUserInfoService(userInfo.value);
+
+  ElMessage(result.data.message ?result.data.message : '修改成功' )
+
+  userInfoStore.setInfo(userInfo.value)
+}
+
 </script>
 <template>
   <el-card class="page-container">
@@ -41,7 +58,7 @@ const rules = {
             <el-input v-model="userInfo.email"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary">提交修改</el-button>
+            <el-button type="primary" @click="updateUserInfo">提交修改</el-button>
           </el-form-item>
         </el-form>
       </el-col>
