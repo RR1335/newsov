@@ -36,3 +36,6 @@ export const userRegisterService = (registerData) => {
     return result;
 }
 
+export const userInfoService = () => {
+    return inst.get('/user/userInfo')
+}

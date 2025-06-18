@@ -6,9 +6,14 @@ import {
 } from '@element-plus/icons-vue'
 
 import { articleCategoryListService ,
-          articleListService} from '@/api/article.js'
+          articleListService,
+          articleAddService} from '@/api/article.js'
+
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 import { ref } from 'vue'
+import {ElMessage} from "element-plus";
 
 //文章分类数据模型
 const categorys = ref([
@@ -78,7 +83,7 @@ const articles = ref([
 //分页条数据模型
 const pageNum = ref(1)//当前页
 const total = ref(20)//总条数
-const pageSize = ref(3)//每页条数
+const pageSize = ref(10)//每页条数
 
 //当每页条数发生了变化，调用此函数
 const onSizeChange = (size) => {
@@ -103,7 +108,6 @@ const articleModel = ref({
 // 获取分类
 const articleCategoryList = async() => {
    let result = await articleCategoryListService();
-   // console.log(result.data.data)
    categorys.value = result.data.data;
 }
 
@@ -123,19 +127,26 @@ const articleListData=async() => {
   total.value = result.data.data.total;
   articles.value = result.data.data.items;
 
-  // console.log(articles.value.length)
-
   for(let i=0;i<articles.value.length;i++){
     let article = articles.value[i];
     for (let j = 0; j < categorys.value.length; j++) {
-      console.log(categorys.value[j].id);
       if (article.categoryId === categorys.value[j].id) {
         article.categoryName = categorys.value[j].categoryName;
 
       }
     }
   }
+}
 
+const articleAdd = async(clickState) => {
+  articleModel.value.state = clickState
+  let result = await articleAddService(articleModel.value);
+
+  ElMessage(result.data.message ?result.data.message : '添加成功' )
+
+  visibleDrawer.value = false
+
+  articleListData()
 }
 
 articleCategoryList();
@@ -223,11 +234,18 @@ articleListData()
           </el-upload>
         </el-form-item>
         <el-form-item label="文章内容">
-          <div class="editor">富文本编辑器</div>
+          <div class="editor">
+            <quill-editor
+                theme="snow"
+                v-model:content="articleModel.content"
+                contentType="html"
+            >
+            </quill-editor>
+          </div>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">发布</el-button>
-          <el-button type="info">草稿</el-button>
+          <el-button type="primary" @click = "articleAdd('已发布')">发布</el-button>
+          <el-button type="info" @click="articleAdd('草稿')">草稿</el-button>
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -291,6 +309,13 @@ articleListData()
     }
   }
 }
+.editor {
+  width: 100%;
+  :deep(.ql-editor) {
+    min-height: 200px;
+  }
+}
+
 .editor {
   width: 100%;
   :deep(.ql-editor) {

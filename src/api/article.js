@@ -25,3 +25,7 @@ export const deleteCategoryService = (categoryId) => {
 export const articleListService = (params)=>{
     return  inst.get('/article',{params:params})
 }
+
+export const articleAddService = (articleData)=>{
+    return inst.post('/article',articleData)
+}
