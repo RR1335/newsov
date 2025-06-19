@@ -46,7 +46,7 @@ export const updateUserInfoService = (userInfoData) => {
 }
 
 export const updatePasswordService = (params,token) => {
-    console.log(params.get('old_pwd'))
+    console.log("<UNK> ", params);
     return inst.patch('/user/updatePwd', params,{
         headers: {
             'Authorization': token

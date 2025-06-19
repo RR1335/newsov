@@ -53,6 +53,7 @@ const updatePassword = async () => {
   const token = tokenStore.token
   console.log(passwordData.value)
   console.log(token)
+
   const passwordMap = new Map()
 
   passwordMap.set('old_pwd', passwordData.value.oldPassword)
