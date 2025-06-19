@@ -1,5 +1,6 @@
 import inst from '@/utils/request'
 
+
 export const userLoginService = (loginData) => {
 
     const params = new URLSearchParams();
@@ -42,4 +43,13 @@ export const userInfoService = () => {
 
 export const updateUserInfoService = (userInfoData) => {
     return inst.put('/user/update', userInfoData)
+}
+
+export const updatePasswordService = (params,token) => {
+    console.log(params.get('old_pwd'))
+    return inst.patch('/user/updatePwd', params,{
+        headers: {
+            'Authorization': token
+        }
+    })
 }

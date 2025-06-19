@@ -35,14 +35,6 @@ axios.interceptors.response.use(function (response) {
         return response;
     }
 
-    if(error.response.status === 401) {
-        ElMessage.error('请登录；再访问该页面。');
-
-        router.push('/login');
-    }else {
-        ElMessage.error('response js 服务异常');
-    }
-
     ElMessage.error(response.data.message ? response.data.message : 'response js 服务器异常');
     return Promise.reject(error);
 
